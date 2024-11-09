@@ -1,6 +1,14 @@
 from fastapi import FastAPI
 from redis_om import get_redis_connection , HashModel
+from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 @app.get("/")
 async def root():
@@ -9,7 +17,8 @@ async def root():
 redis = get_redis_connection(
    host='redis-14199.c261.us-east-1-4.ec2.redns.redis-cloud.com',
    port=14199,
-   password='CXCcgCTFyPThUI4BkJp4kSofBeK0kFbh'
+   password='CXCcgCTFyPThUI4BkJp4kSofBeK0kFbh',
+   decode_responses = True
 )
 
 class Product(HashModel):
